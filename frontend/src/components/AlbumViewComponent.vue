@@ -156,7 +156,7 @@ h1 {
     font-size: 15px;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 1050px) {
   div.album.w-25 {
     width: calc(100% / 2 - 2%);
   }

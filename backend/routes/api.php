@@ -20,19 +20,16 @@ use Illuminate\Http\Response;
 |
 */
 
-Route::group(['controller' => UtilsController::class], function(){
+Route::group(['controller' => UtilsController::class], function () {
 
 });
 Route::get('/', function (Request $request) {
-
     \App\Models\DataFetcher::fetchData();
-
 });
-
 Route::controller('')->get('/get-code', function (Request $request) {
     $code = FrontEndCode::getCode();
     header('code:' . FrontEndCode::crypt($code->code));
-    return response('', 200);
+    return response()->json(['expiration' => $code->expiration], 200);
 });
 
 
@@ -41,34 +38,45 @@ Route::group(['middleware' => 'front-end.only',], function () {
         'controller' => UserController::class,
         'prefix' => '/user',
     ], function () {
+        Route::post('/check-username', 'checkUserName');
         Route::post('/registro', 'Registro');
         Route::post('/login', 'Login');
-        Route::middleware('auth:sanctum')->get('/user', 'getUser');
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+            Route::get('/user', 'getUser');
+            Route::get('/logout', 'logout');
+        });
+
+
     });
 
     Route::group([
         'prefix' => '/album',
-        'controller' => AlbumController::class
+        'controller' => AlbumController::class,
+        'middleware' => 'front-end.only'
     ], function () {
         Route::get('/', 'getAll');
-        Route::post('/', 'create');
+        Route::middleware(['middleware' => 'auth:sanctum'])->post('/', 'create');
 
         Route::group(['prefix' => '/{id}'], function () {
 
             Route::get('/', 'getIndexedElement');
-            Route::delete('/', 'deleteIndexed');
-            Route::post('/', 'updateIndexed');
+
             Route::get('/image', 'getIndexedImage');
+            Route::group(['middleware' => 'auth:sanctum'], function () {
+                Route::delete('/', 'deleteIndexed');
+                Route::post('/', 'updateIndexed');
+            });
 
             Route::group(['prefix' => '/song', 'controller' => SongController::class], function () {
                 Route::get('/', 'getAll');
                 Route::post('/', 'create');
 
                 Route::group(['prefix' => '/{id_song}'], function () {
-
+                    Route::group(['middleware' => 'auth:sanctum'], function () {
+                        Route::delete('/', 'deleteIndexed');
+                        Route::post('/', 'updateIndexed');
+                    });
                     Route::get('/', 'getIndexedElement');
-                    Route::delete('/', 'deleteIndexed');
-                    Route::post('/', 'updateIndexed');
                     Route::get('/play', 'playPreview');
                 });
             });

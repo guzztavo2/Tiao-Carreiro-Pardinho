@@ -15,9 +15,9 @@ class AlbumController extends Controller
             'dateLaunch' => 'string|max:255'
         ],
         'inputRequired' => [
-            'image_url' => 'string|max:255',
+            'image_url' => 'string|max:255|min:10',
             'image' => 'image|mimes:jpg,png,jpeg|max:1500',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:8',
             'dateLaunch' => 'required|string|max:255'
         ],
         'message' => [

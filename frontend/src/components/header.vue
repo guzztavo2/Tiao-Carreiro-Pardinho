@@ -7,40 +7,79 @@
     >
       <i class="fa-solid fa-user" id="userAccountClick"></i>
       <div
-        v-if="panelRegisterLogin.isVisible"
+        v-if="headerPanel.isVisible"
         id="userAccountClick"
         class="user-wrapper flexColumn align-items-center"
       >
-        <a><i class="fa-solid fa-address-card"></i>registro</a>
-        <a> <i class="fa-solid fa-user"></i> login</a>
+        <a v-if="getUserValidation().token == null" @click="openRegisterModal"
+          ><i class="fa-solid fa-address-card"></i>registro</a
+        >
+        <a v-if="getUserValidation().token == null" @click="openLoginModal">
+          <i class="fa-solid fa-user"></i> login</a
+        >
+        <a
+          @click="openUserPage"
+          v-if="getUserValidation().token !== null"
+          class="w-100"
+          ><i class="fa-solid fa-gear"></i> Olá,
+          {{ getUserValidation().userName }}</a
+        >
+        <a
+          v-if="getUserValidation().token !== null"
+          @click="userLogout"
+          class="w-100"
+          ><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a
+        >
       </div>
     </div>
   </nav>
-  <ModalComponent></ModalComponent>
+  <ModalComponent
+    v-if="modalComponent.modalVisible"
+    :modalType="modalComponent.modalType"
+    @setVisible="setVisible"
+  >
+    <template #message>{{ modalComponent.modalMesssage }}</template>
+  </ModalComponent>
 </template>
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import ModalComponent from "./ModalComponent.vue";
-@Options({ components: { ModalComponent } })
+import User from "./UserModel";
+@Options({
+  components: { ModalComponent },
+  mounted() {
+    this.openUserPage();
+  },
+})
 export default class HeaderApp extends Vue {
-  panelRegisterLogin = {
+  modalComponent = {
+    modalType: 3,
+    modalVisible: false,
+    modalMesssage: "",
+  };
+  headerPanel = {
     isVisible: false,
     user_wrapper: () => {
       return document.getElementsByClassName("user-wrapper")[0];
     },
   };
-
+  setVisible() {
+    this.modalComponent.modalVisible = !this.modalComponent.modalVisible;
+  }
+  getUserValidation() {
+    return User.getToken();
+  }
   panel_registerLogin() {
-    const element = { element: this.panelRegisterLogin.user_wrapper };
+    const element = { element: this.headerPanel.user_wrapper };
     const event = (event: Event) => {
-      if (this.panelRegisterLogin.isVisible) {
+      if (this.headerPanel.isVisible) {
         if (
           (event.target as HTMLElement).getAttribute("id") == "userAccountClick"
         )
           return;
         HeaderApp.animation(true, element);
         setTimeout(() => {
-          this.panelRegisterLogin.isVisible = false;
+          this.headerPanel.isVisible = false;
         }, 400);
       }
     };
@@ -48,22 +87,45 @@ export default class HeaderApp extends Vue {
       if (!remove) window.addEventListener("click", event);
       else window.removeEventListener("click", event);
     };
-    const isVisible = this.panelRegisterLogin.isVisible;
+    const isVisible = this.headerPanel.isVisible;
     if (isVisible) {
       HeaderApp.animation(isVisible, element);
       setTimeout(() => {
-        this.panelRegisterLogin.isVisible = !isVisible;
+        this.headerPanel.isVisible = !isVisible;
       }, 400);
       eventListener(isVisible);
     } else {
       eventListener(isVisible);
-      this.panelRegisterLogin.isVisible = !isVisible;
+      this.headerPanel.isVisible = !isVisible;
       this.$nextTick(() => {
         HeaderApp.animation(isVisible, element);
       });
     }
   }
-
+  openUserPage() {
+    this.modalComponent.modalType = 4;
+    this.modalComponent.modalVisible = true;
+  }
+  openRegisterModal() {
+    this.modalComponent.modalType = 2;
+    this.$nextTick(() => {
+      this.modalComponent.modalVisible = true;
+    });
+  }
+  openLoginModal() {
+    this.modalComponent.modalType = 3;
+    this.$nextTick(() => {
+      this.modalComponent.modalVisible = true;
+    });
+  }
+  async userLogout() {
+    await User.logout().then(() => {
+      User.cleanToken();
+      this.modalComponent.modalMesssage = "Você saiu com sucesso!";
+      this.modalComponent.modalType = 1;
+      this.modalComponent.modalVisible = true;
+    });
+  }
   // eslint-disable-next-line @typescript-eslint/ban-types
   private static animation(isVisible: boolean, element: { element: Function }) {
     if (isVisible) {
@@ -123,7 +185,7 @@ div.user-wrapper {
 div.user-wrapper a {
   width: 100%;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
   text-align: center;

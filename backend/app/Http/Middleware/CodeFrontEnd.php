@@ -16,13 +16,13 @@ class CodeFrontEnd
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // $code = FrontEndCode::getCode();
-        // $code = $code->code;
-        // $front_end_code = $request->header('code');
-        // $front_end_code = $front_end_code !== null ? FrontEndCode::decrypt($front_end_code) : null;
+        $code = FrontEndCode::getCode();
+        $code = $code->code;
+        $front_end_code = $request->header('code');
+        $front_end_code = $front_end_code !== null ? FrontEndCode::decrypt($front_end_code) : null;
 
-        // if ($front_end_code == null || strcmp($code, $front_end_code) !== 0)
-        //     FrontEndCode::redirectError();
+        if ($front_end_code == null || strcmp($code, $front_end_code) !== 0)
+            FrontEndCode::redirectError();
 
         return $next($request);
     }

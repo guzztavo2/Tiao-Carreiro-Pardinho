@@ -1,11 +1,11 @@
 <template>
-  <h1>Registre-se para fazer upload e editar as músicas e os albuns:</h1>
-  <a @click="loginComponentLink"
-    >Caso já tenha uma conta, é só clicar aqui para logar!</a
+  <h1>Realize o login para fazer upload e editar as músicas e os albuns:</h1>
+  <a @click="registerComponentLink"
+    >Caso ainda não tenha uma conta, clique aqui para registrar!</a
   >
   <form
     class="flexColumn align-items-center"
-    @submit.prevent="registerUser"
+    @submit.prevent="loginUser"
     method="post"
   >
     <label for="nomeUsuario">
@@ -32,58 +32,49 @@
       />
       <small></small>
     </label>
-    <input type="submit" value="Registrar" />
+    <input type="submit" value="Realizar Login" />
   </form>
 </template>
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import User from "@/components/UserModel";
 @Options({
-  emits: ["errorCapture", "loginComponentLink"],
+  emits: ["registerComponentLink", "errorCapture"],
 })
-export default class registroComponent extends Vue {
-  loginComponentLink() {
-    this.$emit("loginComponentLink");
-  }
+export default class loginComponent extends Vue {
   userProps = {
     nomeUsuario: {
-      prop: "",
+      prop: "guzztavo2",
       setInvalid: (message: string) => {
-        registroComponent.setInvalid('label[for="nomeUsuario"]', message);
+        loginComponent.setInvalid('label[for="nomeUsuario"]', message);
       },
       setValid: (message: string) => {
-        registroComponent.setValid('label[for="nomeUsuario"]', message);
+        loginComponent.setValid('label[for="nomeUsuario"]', message);
       },
     },
     senhaUsuario: {
-      prop: "",
+      prop: "12345",
       setInvalid: (message: string) => {
-        registroComponent.setInvalid('label[for="senhaUsuario"]', message);
+        loginComponent.setInvalid('label[for="senhaUsuario"]', message);
       },
       setValid: (message: string) => {
-        registroComponent.setValid('label[for="senhaUsuario"]', message);
+        loginComponent.setValid('label[for="senhaUsuario"]', message);
       },
     },
   };
-  async CheckUserName() {
-    if (this.userProps.nomeUsuario.prop.length == 0) return;
-    const response = await User.checkUserName(this.userProps.nomeUsuario.prop);
-    if (response.error !== null && response !== 200) {
-      this.userProps.nomeUsuario.setInvalid(response.error);
-      return false;
-    }
-    return true;
+  registerComponentLink() {
+    this.$emit("registerComponentLink");
   }
   static setInvalid(labelStr: string, message: string) {
     const label = document.querySelector(labelStr) as HTMLElement;
     if (label == null) return;
-    registroComponent.addRemoveClass(label, "valid", "invalid");
+    loginComponent.addRemoveClass(label, "valid", "invalid");
     (label.querySelector("small") as HTMLElement).innerHTML = message;
   }
   static setValid(labelStr: string, message: string) {
     const label = document.querySelector(labelStr) as HTMLElement;
     if (label == null) return;
-    registroComponent.addRemoveClass(label, "invalid", "valid");
+    loginComponent.addRemoveClass(label, "invalid", "valid");
     (label.querySelector("small") as HTMLElement).innerHTML = message;
   }
   static addRemoveClass(
@@ -115,11 +106,7 @@ export default class registroComponent extends Vue {
       );
     } else if (prop.length >= minChar && prop.length <= maxChar) {
       const campo = isNomeUsuario ? "nomeUsuario" : "senhaUsuario";
-      this.userProps[campo].setValid(
-        isNomeUsuario
-          ? "Esse nome está correto e disponível para registro."
-          : "Esse campo está correto e disponível para registro."
-      );
+      this.userProps[campo].setValid("");
       return true;
     } else {
       const campo = isNomeUsuario ? "nomeUsuario" : "senhaUsuario";
@@ -131,7 +118,7 @@ export default class registroComponent extends Vue {
     return false;
   }
 
-  async registerUser() {
+  async loginUser() {
     if (
       (await this.verificarInput(true)) == false ||
       (await this.verificarInput(false)) == false
@@ -142,23 +129,19 @@ export default class registroComponent extends Vue {
       );
       return;
     }
-    if (await !this.CheckUserName()) return;
-
     const user = new User(
       this.userProps.nomeUsuario.prop,
       this.userProps.senhaUsuario.prop
     );
     await user
-      .registro()
-      .then(() => {
-        this.$emit(
-          "errorCapture",
-          "Registro concluído com sucesso, é só acessar utilizando suas informações!",
-          true
-        );
+      .login()
+      .then((resolve) => {
+        const response = JSON.parse(resolve as string);
+        User.setToken(response.token, response.userName);
+        this.$emit("errorCapture", "Você agora tem acessso ao sistema");
       })
       .catch((error) => {
-        this.$emit("errorCapture", JSON.parse(error).Error);
+        this.$emit("errorCapture", JSON.parse(error));
       });
   }
 }
@@ -179,7 +162,6 @@ a {
   text-align: center;
   cursor: pointer;
 }
-
 form {
   width: 100%;
   padding: 2%;
