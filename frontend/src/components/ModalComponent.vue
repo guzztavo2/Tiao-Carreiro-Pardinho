@@ -28,7 +28,13 @@
       ></loginComponent>
     </div>
     <section id="userPage" class="flexColumn" v-if="typeOfComponent == 4">
-      <h1></h1>
+      <div class="flexRow justify-content-between align-items-center">
+        <h1>
+          Seja bem vindo, {{ getTokenUser().userName }} ao painel de
+          configurações!
+        </h1>
+        <i id="modal" class="fa-regular fa-circle-xmark"></i>
+      </div>
       <main class="flexColumn">
         <UserPage></UserPage>
       </main>
@@ -102,6 +108,9 @@ export default class ModalComponent extends Vue {
   loginComponentLink() {
     this.typeOfComponent = 3;
   }
+  getTokenUser() {
+    return User.getToken();
+  }
 }
 </script>
 <style scoped>
@@ -133,14 +142,33 @@ h1 {
 section#userPage {
   width: 95%;
   height: 95%;
-  background-color: green;
-  padding: 2%;
+  background-color: var(--corPreto);
+  border: 2px solid white;
+  padding: 1%;
 }
 section#userPage main {
-  background-color: red;
   width: 100%;
-  height: 90%;
-  overflow: auto;
+  height: 92%;
+}
+section#userPage div {
+  padding: 0 2%;
+  height: 8%;
+}
+section#userPage h1 {
+  font-size: 1.2vw;
+  color: var(--corBranco);
+  text-transform: uppercase;
+}
+section#userPage i {
+  font-size: 2vw;
+  cursor: pointer;
+  background-color: var(--corAzul);
+  color: var(--corAmarelo);
+  height: 100%;
+  padding: 0 1%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1%;
 }
 @media (max-width: 1500px) {
   h1 {
@@ -149,11 +177,44 @@ section#userPage main {
   div.modalWrapper {
     width: 60%;
   }
+  section#userPage h1 {
+    font-size: 22px;
+    color: var(--corBranco);
+    text-transform: uppercase;
+  }
+  section#userPage i {
+    font-size: 40px;
+    cursor: pointer;
+    color: var(--corAmarelo);
+    padding: 0 2%;
+  }
+}
+@media (max-width: 800px) {
+  section#userPage main {
+    height: 90%;
+  }
+  section#userPage div {
+    height: 10%;
+  }
 }
 @media (max-width: 500px) {
+  section#userPage main {
+    height: 85%;
+  }
+  section#userPage div {
+    height: 15%;
+  }
   div.modalWrapper {
     width: 90%;
     padding: 4%;
+  }
+}
+@media (max-width: 350px) {
+  section#userPage main {
+    height: 80%;
+  }
+  section#userPage div {
+    height: 20%;
   }
 }
 .fade-in-top {
