@@ -28,6 +28,7 @@ Após o período de 5 minutos, o sistema Front-End não conseguirá acessar a ro
 <h3>Sistemas de uploads:</h3>
 <p>Como se trata de uma plataforma de música e imagens, é possível adicionar uma nova imagem para um determinado álbum ou até mesmo trocar a prévia da música. Através do recurso de upload de arquivos e da funcionalidade de atualização de informações do CRUD, é possível modificar um álbum por completo ou até mesmo alterar uma música ou imagem caso não estejam de acordo com as suas preferências. Isso oferece flexibilidade para personalizar e adaptar os conteúdos conforme desejado.</p>
 <h3>Rotas do sistema:</h3>
+<p>Lembre-se: o sistema é do Laravel, e aqui estou trabalhando com as API's. Então é sempre necessário antes da rota, colocar o <code>/api</code>.</p>
 <table>
     <thead>
         <tr>
@@ -39,14 +40,14 @@ Após o período de 5 minutos, o sistema Front-End não conseguirá acessar a ro
     </thead>
     <tbody>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Reseta as Informações</td>
+            <td>Limpa as informações não utilizadas do banco de dados!</td>
             <td>GET</td>
-            <td>/</td>
+            <td>/reset-data</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Pega o código exclusivo para a página Front-End</td>
+            <td>Esse código atualiza a cada alguns minutos.</td>
             <td>GET</td>
             <td>/get-code</td>
         </tr>
@@ -75,8 +76,8 @@ Após o período de 5 minutos, o sistema Front-End não conseguirá acessar a ro
             <td>/album/</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Criar novo album</td>
+            <td>*</td>
             <td>POST</td>
             <td>/album/</td>
         </tr>
@@ -93,14 +94,14 @@ Após o período de 5 minutos, o sistema Front-End não conseguirá acessar a ro
             <td>/album/{id}/image</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Deletar o álbum identificado pelo ID.</td>
+            <td>*</td>
             <td>DELETE</td>
             <td>/album/{id}</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Atualiza o álbum identificado pelo ID.</td>
+            <td>*</td>
             <td>POST</td>
             <td>/album/{id}</td>
         </tr>
@@ -111,26 +112,26 @@ Após o período de 5 minutos, o sistema Front-End não conseguirá acessar a ro
             <td>/album/{id}/song</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Obtém todos os sons do álbum.</td>
+            <td>*</td>
             <td>POST</td>
             <td>/album/{id}/song</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Deleta o preview identificado pelo álbum e pelo id do mesmo.</td>
+            <td>*</td>
             <td>DELETE</td>
             <td>/album/{id}/song/{id_song}</td>
         </tr>
         <tr>
-            <td>N/A</td>
-            <td>N/A</td>
+            <td>Atualizar / Troca o preview.</td>
+            <td>*</td>
             <td>POST</td>
             <td>/album/{id}/song/{id_song}</td>
         </tr>
         <tr>
             <td>getIndexedElement</td>
-            <td>Obter música específica</td>
+            <td>Obter preview específica</td>
             <td>GET</td>
             <td>/album/{id}/song/{id_song}</td>
         </tr>

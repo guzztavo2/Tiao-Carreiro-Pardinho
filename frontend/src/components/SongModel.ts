@@ -3,12 +3,11 @@ import Album from "./AlbumModel";
 import Request from "./RequestModel";
 // import Storage from "./StorageModel";
 export default class Song {
-  //   public static getServerData() {}
   private static SONGS_URl_ALBUM = "http://127.0.0.1:8000/api/album/";
-  private id!: number;
-  private name!: string;
-  private duration!: number;
-  private preview!: string;
+  public id!: number;
+  public name!: string;
+  public duration!: number;
+  public preview!: string;
   public constructor(album: Album | undefined = undefined) {
     if (album !== undefined) Song.SONGS_URl_ALBUM += album.id + "/song";
   }

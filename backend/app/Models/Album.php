@@ -40,11 +40,14 @@ class Album extends Model
     }
     private static function defineDateTime($dateLaunch)
     {
+
+
         if (preg_match('/[0-9]{4}-[0-9]{2}-[0-9]{2}/', $dateLaunch))
             return $dateLaunch;
         if (strlen($dateLaunch) == 7) {
             $dateLaunch = '0' . $dateLaunch;
         }
+        $dateLaunch = str_replace('-', '', $dateLaunch);
         $dia = substr($dateLaunch, 0, 2);
         $mes = substr($dateLaunch, 2, 2);
         $ano = substr($dateLaunch, 4);
@@ -62,6 +65,11 @@ class Album extends Model
     {
         $dateLaunch = self::defineDateTime($dateLaunch);
         $dateLaunch = date_create($dateLaunch);
+        if ($dateLaunch == false) {
+            response('A data não está em um formato correto, por favor, tente novamente, lembre-se de de utilizar os dias e o meses corretos.', 400)->send();
+            exit;
+        }
+
         $dateLaunch = date_format($dateLaunch, 'd-m-Y');
         if (!self::verificarData($dateLaunch))
             return null;

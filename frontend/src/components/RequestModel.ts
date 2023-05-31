@@ -6,7 +6,7 @@ export default class Request {
   private xhr: XMLHttpRequest;
   public static validation = {
     setValidation: (expireTime: string, validation: string) => {
-      Storage.setItem("expireTime", expireTime);
+      Storage.setItem("expire_validation", expireTime);
       Storage.setItem("validation", validation);
     },
     getValidation: async () => {
@@ -69,7 +69,6 @@ export default class Request {
         "code",
         await Request.validation.getValidation()
       );
-
       this.xhr.setRequestHeader(
         "Authorization",
         "Bearer " + User.getToken().token
@@ -97,7 +96,7 @@ export default class Request {
   ): FormData {
     const formdata = new FormData();
     for (const el in element) {
-      if (typeof element[el] == "string") formdata.set(el, element[el]);
+      formdata.set(el, element[el]);
     }
     return formdata;
   }

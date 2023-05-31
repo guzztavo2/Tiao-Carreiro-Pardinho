@@ -36,7 +36,7 @@
         <i id="modal" class="fa-regular fa-circle-xmark"></i>
       </div>
       <main class="flexColumn">
-        <UserPage></UserPage>
+        <UserPage :propSection="1" @closeComponent="closeComponent"></UserPage>
       </main>
     </section>
   </section>
@@ -55,7 +55,7 @@ import UserPage from "@/views/HomePage/SectionUserPage.vue";
     },
     message: {
       type: String,
-      require: false,
+      require: true,
     },
   },
   emits: ["setVisible"],
@@ -107,6 +107,9 @@ export default class ModalComponent extends Vue {
   }
   loginComponentLink() {
     this.typeOfComponent = 3;
+  }
+  closeComponent() {
+    this.$emit("setVisible");
   }
   getTokenUser() {
     return User.getToken();
@@ -162,13 +165,15 @@ section#userPage h1 {
 section#userPage i {
   font-size: 2vw;
   cursor: pointer;
-  background-color: var(--corAzul);
   color: var(--corAmarelo);
   height: 100%;
   padding: 0 1%;
   display: flex;
   align-items: center;
   margin-bottom: 1%;
+}
+section#userPage i:hover {
+  color: var(--corBranco);
 }
 @media (max-width: 1500px) {
   h1 {

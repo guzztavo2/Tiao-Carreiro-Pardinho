@@ -8,7 +8,7 @@ export default class Album {
   imageurl!: string;
   public static ALL_ALBUMS_URL = "http://127.0.0.1:8000/api/album";
 
-  private static localStorage = {
+  public static localStorage = {
     setAlbuns: (data: Album[]) => {
       Storage.setItem("albums", JSON.stringify(data));
     },
@@ -18,6 +18,10 @@ export default class Album {
         return JSON.parse(result);
       }
       return null;
+    },
+    cleanAlbums: async () => {
+      Storage.removeItem("albums");
+      await Album.getAllAlbums().then();
     },
     setExpireTime: () => {
       const result = new Date();
@@ -79,7 +83,7 @@ export default class Album {
   public getImgUrl() {
     return this.imageurl;
   }
-  public static async getAllAlbums() {
+  public static async getAllAlbums(): Promise<false | Album[]> {
     let response: Album[] = [];
     const expireTime = this.localStorage.getExpireTime();
     if (
@@ -88,8 +92,13 @@ export default class Album {
       (expireTime !== null && expireTime < new Date())
     ) {
       response = await this.getServerData().then();
+      if (response.length == 0) return false;
+
+      if (response == undefined) return false;
       this.localStorage.setAlbuns(response);
+      this.localStorage.setExpireTime();
     } else response = this.localStorage.getAlbuns();
+
     return response;
   }
   private static async getServerData() {
@@ -110,8 +119,28 @@ export default class Album {
           result.push(album);
         });
         return result;
+      })
+      .catch((err) => {
+        return err;
       });
     return result;
+  }
+  public static async createAlbum(obj: {
+    name: string;
+    date: string;
+    file: File;
+  }) {
+    const request = new Request();
+    const formData = Request.transformElementsFormData({
+      name: obj.name,
+      dateLaunch: obj.date,
+      image: obj.file,
+    });
+    return await request.executeAuthenticated(
+      "POST",
+      Album.ALL_ALBUMS_URL,
+      formData
+    );
   }
   public async save(imageObject = false) {
     const request = new Request();

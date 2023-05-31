@@ -9,7 +9,7 @@
     />
   </div>
   <div class="w-100 d-none">
-    <h1>Veja alguns dos Albuns:</h1>
+    <h1>Veja alguns dos Álbuns:</h1>
   </div>
   <div
     class="d-none flexRow albums-wrapper justify-content-center align-items-center"

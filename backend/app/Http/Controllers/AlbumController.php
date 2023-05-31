@@ -16,8 +16,8 @@ class AlbumController extends Controller
         ],
         'inputRequired' => [
             'image_url' => 'string|max:255|min:10',
-            'image' => 'image|mimes:jpg,png,jpeg|max:1500',
-            'name' => 'required|string|max:255|min:8',
+            'image' => 'image|mimes:jpg,png,jpeg',
+            'name' => 'required|string|max:255|min:5',
             'dateLaunch' => 'required|string|max:255'
         ],
         'message' => [
@@ -44,7 +44,7 @@ class AlbumController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors()->first(), 400);
         else if ($request->image == null && $request->image_url == null)
-            response()->json('Precisa enviar uma imagem para a capa do album!', 400);
+            return response()->json('Precisa enviar uma imagem para a capa do album!', 400);
 
         if ($request->image !== null)
             Album::generateAlbum($request->name, UtilsController::uploadNewFile('', $request->image), $request->dateLaunch);
@@ -56,7 +56,6 @@ class AlbumController extends Controller
     public function getAll()
     {
         $list = Album::get();
-
         Album::prepareForSend($list);
         return response()->json($list->all(), 200);
     }
@@ -69,13 +68,15 @@ class AlbumController extends Controller
     }
     public function getIndexedImage(int $id)
     {
-        $album = self::verifyAlbum($id);
+        $album = self::verifyAlbum($id)->first();
         UtilsController::getFile($album->image);
     }
     public function deleteIndexed(int $id)
     {
         self::verifyAlbum($id);
-        Album::find($id)->delete();
+        $album = Album::find($id)->first();
+        $album->songs()->delete();
+        $album->delete();
         return response()->json('Album deletado com sucesso', 200);
     }
 

@@ -23,7 +23,7 @@ use Illuminate\Http\Response;
 Route::group(['controller' => UtilsController::class], function () {
 
 });
-Route::get('/', function (Request $request) {
+Route::get('/reset-data', function (Request $request) {
     \App\Models\DataFetcher::fetchData();
 });
 Route::controller('')->get('/get-code', function (Request $request) {
@@ -32,6 +32,7 @@ Route::controller('')->get('/get-code', function (Request $request) {
     return response()->json(['expiration' => $code->expiration], 200);
 });
 
+Route::get('album/{id}/image', [AlbumController::class, 'getIndexedImage']);
 
 Route::group(['middleware' => 'front-end.only',], function () {
     Route::group([
@@ -48,7 +49,6 @@ Route::group(['middleware' => 'front-end.only',], function () {
 
 
     });
-
     Route::group([
         'prefix' => '/album',
         'controller' => AlbumController::class,
@@ -61,7 +61,7 @@ Route::group(['middleware' => 'front-end.only',], function () {
 
             Route::get('/', 'getIndexedElement');
 
-            Route::get('/image', 'getIndexedImage');
+
             Route::group(['middleware' => 'auth:sanctum'], function () {
                 Route::delete('/', 'deleteIndexed');
                 Route::post('/', 'updateIndexed');

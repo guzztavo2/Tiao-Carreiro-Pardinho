@@ -114,9 +114,7 @@ export default class HeaderApp extends Vue {
   }
   openLoginModal() {
     this.modalComponent.modalType = 3;
-    this.$nextTick(() => {
-      this.modalComponent.modalVisible = true;
-    });
+    this.modalComponent.modalVisible = true;
   }
   async userLogout() {
     await User.logout().then(() => {

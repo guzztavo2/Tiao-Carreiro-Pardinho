@@ -5,13 +5,13 @@
         <i class="fa-solid fa-left-long"></i> Voltar para os albuns.
       </h1>
       <div class="image-albumWrapper w-100">
-        <img v-bind:src="albumItemObj.getImgUrl()" alt="" />
+        <img v-bind:src="albumItemObj.imageurl" alt="" />
       </div>
       <div class="name-albumWrapper w-100">
         <h1>{{ albumItemObj.name }}</h1>
       </div>
       <div class="dateLaunch-albumWrapper w-100">
-        <h1>Lançamento: {{ albumItemObj.getDateLaunch() }}</h1>
+        <h1>Lançamento: {{ albumItemObj.dateLaunch }}</h1>
       </div>
       <PlayerComponent
         v-if="actualPreview !== null"
@@ -28,7 +28,7 @@
         <div class="image w-50">
           <img
             v-if="albumItemObj !== null"
-            v-bind:src="albumItemObj.getImgUrl()"
+            v-bind:src="albumItemObj.imageurl"
             alt=""
           />
         </div>
