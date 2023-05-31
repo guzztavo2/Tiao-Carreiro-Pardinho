@@ -24,11 +24,11 @@ Eu já deixei as minhas variáveis de ambiente disponíveis para facilitar o ace
 <p>
 Para instalar o Front-End é um pouco mais especifico e complicado pois eu tentei utilizar as variáveis de ambiente do VueJS, no entanto sem sucesso.
  Para instalar o Front-End, caso o IP do Back-End não seja exatamente: "http://127.0.0.1:8000/". Irá dar problema no para se conectar. 
-  Mas caso queira mudar, você terá que acessar 3 (três) arquivos: 
-  frontend\src\components\AlbumModel.ts => ALL_ALBUMS_URL => Url de requisição do álbum, terá que trocar até a porta do sistema.
-  frontend\src\components\RequestModel.ts=> CODE_URL => Url de requisição do código para o front-end
-  frontend\src\components\UserModel.ts => userUrl => Url de requisição de usuário, tanto login quanto registro.
-  frontend\src\components\SongModel.ts => SONGS_URl_ALBUM => Url de requisição das previews / músicas.
+  Mas caso queira mudar, você terá que acessar 3 (três) arquivos: </br>
+  frontend\src\components\AlbumModel.ts => ALL_ALBUMS_URL => Url de requisição do álbum, terá que trocar até a porta do sistema.</br>
+  frontend\src\components\RequestModel.ts=> CODE_URL => Url de requisição do código para o front-end.</br>
+  frontend\src\components\UserModel.ts => userUrl => Url de requisição de usuário, tanto login quanto registro.</br>
+  frontend\src\components\SongModel.ts => SONGS_URl_ALBUM => Url de requisição das previews / músicas.</br>
 </p>
 <h2>1. Back-End - Informações da produção:</h2>
 <p>O Back-End desempenha um papel fundamental em todos os sistemas Web. E o Laravel é capaz de lidar com eficiência a questão da segurança das APIs através do Laravel:Sanctum!</p>
