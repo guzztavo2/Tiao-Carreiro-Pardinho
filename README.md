@@ -20,7 +20,16 @@ A ideia inicial é acessar as músicas e álbuns do Tião Carreiro & Pardinho. A
 <h2>Instalando o sistema:</h2>
 <p>Após clonar o repositório, você pode acessar a pasta "Front-End" e a pasta "Back-End". 
 Eu já deixei as minhas variáveis de ambiente disponíveis para facilitar o acesso, mas lembre-se de dar uma olhada nas seguintes variávels: </p>
-<p>No arquivo .env do framework Laravel, é necessário monitorar a seguinte variável: "FRONT_END_URL = http://localhost:8081". Além disso, será necessário configurar as demais variáveis de ambiente relacionadas ao banco de dados. Após isso, é só ir via linhas de comando até a pasta backend do projeto e <code>php artisan serve</code>.</p>
+<p>No arquivo .env do framework Laravel, é necessário monitorar a seguinte variável: "FRONT_END_URL = http://localhost:8081". Além disso, será necessário configurar as demais variáveis de ambiente relacionadas ao banco de dados. Caso não faça isso, o client-side terá problemas com a configuração do CORS. Após isso, é só ir via linhas de comando até a pasta backend do projeto e <code>php artisan serve</code>.</p>
+<p>
+Para instalar o Front-End é um pouco mais especifico e complicado pois eu tentei utilizar as variáveis de ambiente do VueJS, no entanto sem sucesso.
+ Para instalar o Front-End, caso o IP do Back-End não seja exatamente: "http://127.0.0.1:8000/". Irá dar problema no para se conectar. 
+  Mas caso queira mudar, você terá que acessar 3 (três) arquivos: 
+  frontend\src\components\AlbumModel.ts => ALL_ALBUMS_URL => Url de requisição do álbum, terá que trocar até a porta do sistema.
+  frontend\src\components\RequestModel.ts=> CODE_URL => Url de requisição do código para o front-end
+  frontend\src\components\UserModel.ts => userUrl => Url de requisição de usuário, tanto login quanto registro.
+  frontend\src\components\SongModel.ts => SONGS_URl_ALBUM => Url de requisição das previews / músicas.
+</p>
 <h2>1. Back-End - Informações da produção:</h2>
 <p>O Back-End desempenha um papel fundamental em todos os sistemas Web. E o Laravel é capaz de lidar com eficiência a questão da segurança das APIs através do Laravel:Sanctum!</p>
 <p>No entanto, decidi ir além e comecei a desenvolver meu próprio código/Middleware para acessar as rotas da API. Para aqueles que não estão familiarizados, as Middlewares do Laravel são trechos de código que podem ser executados antes do acesso a qualquer rota do sistema. Isso significa que sempre que alguém acessar uma rota HTTP do sistema, ela passará por esse código.</p>
