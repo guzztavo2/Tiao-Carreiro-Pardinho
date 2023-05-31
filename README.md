@@ -14,7 +14,13 @@ A ideia inicial é acessar as músicas e álbuns do Tião Carreiro & Pardinho. A
     <li>CSS</li>
     <li>FontAwesome</li>
 </ul>
-
+  <h2>Front-End e Back-End separados:</h2>
+  <p>Separar o front-end do back-end em um projeto de desenvolvimento de software oferece uma série de benefícios. Essa abordagem permite uma clara divisão de responsabilidades, com o front-end focado na apresentação e interação com o usuário, enquanto o back-end trata da lógica de negócios e processamento de dados. A separação também facilita a escalabilidade do sistema, pois cada camada pode ser dimensionada independentemente. Além disso, há uma maior reutilização de código, pois a mesma API de back-end pode ser usada por diferentes interfaces de usuário. A manutenção é mais fácil, já que as atualizações e correções podem ser implementadas de forma mais rápida e eficiente. A colaboração entre equipes também é facilitada, permitindo que os desenvolvedores de front-end e de back-end trabalhem de forma independente. A separação do front-end e do back-end também resulta em uma melhor experiência do usuário, com interfaces mais eficientes e responsivas. Por fim, essa abordagem permite o uso de tecnologias especializadas em cada camada, de acordo com os requisitos e demandas específicas. No entanto, é importante considerar as necessidades do projeto antes de decidir pela separação ou integração das camadas, pois essa abordagem pode não ser adequada para todos os casos.</p>
+  
+<h2>Instalando o sistema:</h2>
+<p>Após clonar o repositório, você pode acessar a pasta "Front-End" e a pasta "Back-End". 
+Eu já deixei as minhas variáveis de ambiente disponíveis para facilitar o acesso, mas lembre-se de dar uma olhada nas seguintes variávels: </p>
+<p>No arquivo .env do framework Laravel, é necessário monitorar a seguinte variável: "FRONT_END_URL = http://localhost:8081". Além disso, será necessário configurar as demais variáveis de ambiente relacionadas ao banco de dados. Após isso, é só ir via linhas de comando até a pasta backend do projeto e <code>php artisan serve</code>.</p>
 <h2>1. Back-End - Informações da produção:</h2>
 <p>O Back-End desempenha um papel fundamental em todos os sistemas Web. E o Laravel é capaz de lidar com eficiência a questão da segurança das APIs através do Laravel:Sanctum!</p>
 <p>No entanto, decidi ir além e comecei a desenvolver meu próprio código/Middleware para acessar as rotas da API. Para aqueles que não estão familiarizados, as Middlewares do Laravel são trechos de código que podem ser executados antes do acesso a qualquer rota do sistema. Isso significa que sempre que alguém acessar uma rota HTTP do sistema, ela passará por esse código.</p>
