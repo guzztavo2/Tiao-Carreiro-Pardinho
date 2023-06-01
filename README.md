@@ -18,13 +18,15 @@ A ideia inicial é acessar as músicas e álbuns do Tião Carreiro & Pardinho. A
   <p>Separar o front-end do back-end em um projeto de desenvolvimento de software oferece uma série de benefícios. Essa abordagem permite uma clara divisão de responsabilidades, com o front-end focado na apresentação e interação com o usuário, enquanto o back-end trata da lógica de negócios e processamento de dados. A separação também facilita a escalabilidade do sistema, pois cada camada pode ser dimensionada independentemente. Além disso, há uma maior reutilização de código, pois a mesma API de back-end pode ser usada por diferentes interfaces de usuário. A manutenção é mais fácil, já que as atualizações e correções podem ser implementadas de forma mais rápida e eficiente. A colaboração entre equipes também é facilitada, permitindo que os desenvolvedores de front-end e de back-end trabalhem de forma independente. A separação do front-end e do back-end também resulta em uma melhor experiência do usuário, com interfaces mais eficientes e responsivas. Por fim, essa abordagem permite o uso de tecnologias especializadas em cada camada, de acordo com os requisitos e demandas específicas. No entanto, é importante considerar as necessidades do projeto antes de decidir pela separação ou integração das camadas, pois essa abordagem pode não ser adequada para todos os casos.</p>
   
 <h2>Instalando o sistema:</h2>
+<h2>Instalando o Back-End:</h2>
 <p>Após clonar o repositório, você pode acessar a pasta "Front-End" e a pasta "Back-End". 
 Eu já deixei as minhas variáveis de ambiente disponíveis para facilitar o acesso, mas lembre-se de dar uma olhada nas seguintes variávels: </p>
-<p>No arquivo .env do framework Laravel, é necessário monitorar a seguinte variável: "FRONT_END_URL = http://localhost:8081". Além disso, será necessário configurar as demais variáveis de ambiente relacionadas ao banco de dados. Caso não faça isso, o client-side terá problemas com a configuração do CORS. Após isso, é só ir via linhas de comando até a pasta backend do projeto e <code>php artisan serve</code>.</p>
+<p>No arquivo .env do framework Laravel, é necessário monitorar a seguinte variável: "FRONT_END_URL = http://localhost:8081". Além disso, será necessário configurar as demais variáveis de ambiente relacionadas ao banco de dados. Caso não faça isso, o client-side terá problemas com a configuração do CORS. Após isso, é só ir via linhas de comando até a pasta backend do projeto e <code>php artisan migrate</code> e <code>php artisan serve</code>.</p>
+<h2>Instalando o Front-End:</h2>
 <p>
 Para instalar o Front-End é um pouco mais especifico e complicado pois eu tentei utilizar as variáveis de ambiente do VueJS, no entanto sem sucesso.
- Para instalar o Front-End, caso o IP do Back-End não seja exatamente: "http://127.0.0.1:8000/". Irá dar problema no para se conectar. 
-  Mas caso queira mudar, você terá que acessar 3 (três) arquivos: </br>
+ Para instalar o Front-End, caso o IP do Back-End não seja exatamente: "http://127.0.0.1:8000/". Irá dar problema para se conectar por causa da configuração já pré estabeleecidas. 
+  Mas caso queira mudar, você terá que acessar 4 (quatro) arquivos: </br>
   frontend\src\components\AlbumModel.ts => ALL_ALBUMS_URL => Url de requisição do álbum, terá que trocar até a porta do sistema.</br>
   frontend\src\components\RequestModel.ts=> CODE_URL => Url de requisição do código para o front-end.</br>
   frontend\src\components\UserModel.ts => userUrl => Url de requisição de usuário, tanto login quanto registro.</br>
