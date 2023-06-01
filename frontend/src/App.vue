@@ -8,9 +8,6 @@ import HomeView from "./views/HomeView.vue";
 import { Vue, Options } from "vue-class-component";
 @Options({
   components: { HeaderApp, HomeView },
-  mounted() {
-    console.log(process.env);
-  },
 })
 export default class App extends Vue {}
 </script>

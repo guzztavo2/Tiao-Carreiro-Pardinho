@@ -104,7 +104,7 @@ export default class Album {
   private static async getServerData() {
     const request = new Request();
     const result = await request
-      .Execute("GET", this.ALL_ALBUMS_URL)
+      .Execute("GET", Album.ALL_ALBUMS_URL)
       .then((response) => {
         if (typeof response !== "string") return;
         response = JSON.parse(response) as any;

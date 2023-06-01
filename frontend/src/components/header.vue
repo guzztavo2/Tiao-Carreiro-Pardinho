@@ -47,9 +47,6 @@ import ModalComponent from "./ModalComponent.vue";
 import User from "./UserModel";
 @Options({
   components: { ModalComponent },
-  mounted() {
-    this.openUserPage();
-  },
 })
 export default class HeaderApp extends Vue {
   modalComponent = {

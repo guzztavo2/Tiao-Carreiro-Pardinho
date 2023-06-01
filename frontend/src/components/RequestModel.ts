@@ -4,7 +4,7 @@ import Storage from "./StorageModel";
 import User from "./UserModel";
 export default class Request {
   private xhr: XMLHttpRequest;
-  public static CODE_URL: "http://127.0.0.1:8000/api/get-code";
+  public static CODE_URL = "http://127.0.0.1:8000/api/get-code";
   public static validation = {
     setValidation: (expireTime: string, validation: string) => {
       Storage.setItem("expire_validation", expireTime);
