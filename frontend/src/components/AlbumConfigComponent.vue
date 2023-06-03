@@ -48,10 +48,10 @@
           <img v-bind:src="album.imageurl" alt="" srcset="" />
         </div>
         <div class="special-wrapper content flexRow">
-          <div class="w-50" @click="editAlbum(album)">
+          <div class="w-50 edit-button-wrapper" @click="editAlbum(album)">
             <h1>Editar</h1>
           </div>
-          <div class="w-50"><h1>Deletar</h1></div>
+          <div class="w-50 delete-button-wrapper"><h1>Deletar</h1></div>
         </div>
       </div>
     </div>
@@ -117,7 +117,6 @@ div.album-wrapper div.content {
 }
 div.album-wrapper h1 {
   width: 100%;
-  cursor: pointer;
   padding: 2%;
   font-weight: 600;
   text-align: center;
@@ -173,6 +172,23 @@ div.add-wrapper h1 {
   padding: 1%;
   border-radius: 30px;
   cursor: pointer;
+}
+div.edit-button-wrapper h1 {
+  background-color: var(--corAzul);
+  color: var(--corBranco);
+  padding: 4%;
+  cursor: pointer;
+}
+div.delete-button-wrapper h1 {
+  background-color: var(--corPreto);
+  color: var(--corBranco);
+  padding: 4%;
+  cursor: pointer;
+}
+div.edit-button-wrapper h1:hover,
+div.delete-button-wrapper h1:hover {
+  background-color: var(--corPreto);
+  color: var(--corBranco);
 }
 div.add-wrapper h1:hover {
   background-color: white;

@@ -13,14 +13,13 @@ export default class Request {
     getValidation: async () => {
       const code = Storage.getItem("validation");
       const expiration: string | null | Date = Storage.getItem("expireTime");
-
       if (
         code == null ||
         expiration == null ||
-        typeof expiration !== "string" ||
-        !(new Date(expiration) > new Date())
-      )
+        !(new Date(expiration as string) >= new Date())
+      ) {
         await Request.getValidation();
+      }
       return Storage.getItem("validation") as string;
     },
   };

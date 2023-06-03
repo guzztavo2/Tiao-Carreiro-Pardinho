@@ -38,14 +38,16 @@ import Album from "@/components/AlbumModel";
 @Options({
   emits: ["finishLoading", "AlbumRequest"],
   async mounted() {
-    this.listAlbuns = await Album.getAllAlbums();
-    this.listAlbunsCopy = this.listAlbuns;
-    this.$emit("finishLoading");
-    setTimeout(() => {
+    this.$emit("finishLoading", true);
+    await Album.getAllAlbums().then((resolve) => {
+      this.listAlbuns = resolve;
+      this.listAlbunsCopy = this.listAlbuns;
+
       document.querySelectorAll(".d-none").forEach((item) => {
         item.classList.remove("d-none");
       });
-    }, 700);
+      this.$emit("finishLoading");
+    });
   },
 })
 export default class AlbumsComponent extends Vue {

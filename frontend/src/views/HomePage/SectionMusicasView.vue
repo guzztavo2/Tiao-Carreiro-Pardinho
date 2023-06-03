@@ -28,8 +28,9 @@ export default class SectionMusicas extends Vue {
   isLoading = true;
   albumComponentsIsVisible = true;
   AlbumItem: Album | null = null;
-  finishLoading() {
-    this.isLoading = false;
+  finishLoading(isLoading: boolean | undefined = undefined) {
+    if (isLoading == undefined) this.isLoading = false;
+    this.isLoading = isLoading as boolean;
   }
   clearAlbumItem() {
     this.AlbumItem = null;

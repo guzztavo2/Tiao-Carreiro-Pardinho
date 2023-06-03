@@ -48,6 +48,9 @@
         "
       >
         <h1>Músicas desse álbum:</h1>
+        <div class="flexRow w-100 adc-music-button-wrapper">
+          <h1 class="w-100 adc-music-button">Adicionar música ao álbum</h1>
+        </div>
         <div
           class="w-100 flexRow song-wrapper align-items-center justify-content-center"
         >
@@ -283,12 +286,30 @@ small {
   text-transform: uppercase;
 }
 div.song-wrapper {
+  background-color: var(--corPreto);
+  color: var(--corAmarelo);
+}
+div.song-wrapper div.title {
   background-color: red;
-  padding: 1% 0;
+  padding: 0 1%;
 }
 div.song-wrapper div.title,
 div.content {
   width: calc(100% / 4);
   text-align: center;
+}
+
+h1.adc-music-button {
+  background-color: var(--corPreto);
+  color: var(--corBranco);
+  padding: 1%;
+  text-align: center;
+  max-width: 50%;
+  cursor: pointer;
+  border: 1px solid var(--corBranco);
+}
+div.adc-music-button-wrapper {
+  justify-content: end;
+  padding: 1%;
 }
 </style>

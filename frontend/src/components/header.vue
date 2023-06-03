@@ -1,4 +1,5 @@
 <template>
+  <loadingComponent v-if="isLoading"></loadingComponent>
   <nav class="flexRow align-items-center justify-content-around">
     <div
       @click="panel_registerLogin"
@@ -44,11 +45,16 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import ModalComponent from "./ModalComponent.vue";
+import loadingComponent from "./loadingComponent.vue";
 import User from "./UserModel";
 @Options({
-  components: { ModalComponent },
+  mounted() {
+    this.isLoading = false;
+  },
+  components: { ModalComponent, loadingComponent },
 })
 export default class HeaderApp extends Vue {
+  isLoading = true;
   modalComponent = {
     modalType: 3,
     modalVisible: false,
@@ -114,12 +120,17 @@ export default class HeaderApp extends Vue {
     this.modalComponent.modalVisible = true;
   }
   async userLogout() {
-    await User.logout().then(() => {
-      User.cleanToken();
-      this.modalComponent.modalMesssage = "Você saiu com sucesso!";
-      this.modalComponent.modalType = 1;
-      this.modalComponent.modalVisible = true;
-    });
+    this.isLoading = true;
+    await User.logout()
+      .then(() => {
+        User.cleanToken();
+        this.modalComponent.modalMesssage = "Você saiu com sucesso!";
+        this.modalComponent.modalType = 1;
+        this.modalComponent.modalVisible = true;
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
   // eslint-disable-next-line @typescript-eslint/ban-types
   private static animation(isVisible: boolean, element: { element: Function }) {

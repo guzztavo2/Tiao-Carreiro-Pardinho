@@ -1,4 +1,5 @@
 <template>
+  <loadingComponent v-if="isLoading"></loadingComponent>
   <h1>Realize o login para fazer upload e editar as músicas e os albuns:</h1>
   <a @click="registerComponentLink"
     >Caso ainda não tenha uma conta, clique aqui para registrar!</a
@@ -37,11 +38,17 @@
 </template>
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import loadingComponent from "./loadingComponent.vue";
 import User from "@/components/UserModel";
 @Options({
   emits: ["registerComponentLink", "errorCapture"],
+  components: { loadingComponent },
+  mounted() {
+    this.isLoading = false;
+  },
 })
 export default class loginComponent extends Vue {
+  isLoading = true;
   userProps = {
     nomeUsuario: {
       prop: "guzztavo2",
@@ -119,6 +126,7 @@ export default class loginComponent extends Vue {
   }
 
   async loginUser() {
+    this.isLoading = true;
     if (
       (await this.verificarInput(true)) == false ||
       (await this.verificarInput(false)) == false
@@ -142,6 +150,9 @@ export default class loginComponent extends Vue {
       })
       .catch((error) => {
         this.$emit("errorCapture", JSON.parse(error));
+      })
+      .finally(() => {
+        this.isLoading = false;
       });
   }
 }
