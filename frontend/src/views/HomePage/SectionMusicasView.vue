@@ -1,6 +1,6 @@
 <template>
   <h1>Veja ou escute algumas obras:</h1>
-  <section id="obras" class="flexColumn">
+  <section ref="section_obras" id="obras" class="flexColumn">
     <loadingComponent v-if="isLoading"></loadingComponent>
     <AlbumComponents
       v-if="albumComponentsIsVisible"
@@ -23,6 +23,9 @@ import Album from "@/components/AlbumModel";
 import SongComponent from "@/components/SongViewComponents.vue";
 @Options({
   components: { AlbumComponents, loadingComponent, SongComponent },
+  mounted() {
+    (this.$refs.section_obras as HTMLElement).scrollIntoView();
+  },
 })
 export default class SectionMusicas extends Vue {
   isLoading = true;
@@ -33,9 +36,9 @@ export default class SectionMusicas extends Vue {
     this.isLoading = isLoading as boolean;
   }
   clearAlbumItem() {
+    this.isLoading = true;
     this.AlbumItem = null;
     this.albumComponentsIsVisible = true;
-    this.isLoading = true;
   }
   AlbumRequest(album: Album) {
     this.albumComponentsIsVisible = false;
@@ -75,9 +78,14 @@ section {
   padding: 2%;
   position: relative;
 }
+
 @media (max-width: 1500px) {
   h1 {
     font-size: 30px;
+  }
+  section {
+    width: 80%;
+    height: 100%;
   }
 }
 @media (max-width: 900px) {

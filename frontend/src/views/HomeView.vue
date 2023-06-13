@@ -1,7 +1,7 @@
 <template>
-  <MainSection></MainSection>
-  <SectionAbout></SectionAbout>
-  <SectionAbout2></SectionAbout2>
+  <!-- <MainSection></MainSection> -->
+  <!-- <SectionAbout></SectionAbout> -->
+  <!-- <SectionAbout2></SectionAbout2> -->
   <SectionMusicas></SectionMusicas>
 </template>
 <script lang="ts">

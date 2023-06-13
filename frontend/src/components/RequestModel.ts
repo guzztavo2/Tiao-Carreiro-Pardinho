@@ -12,7 +12,9 @@ export default class Request {
     },
     getValidation: async () => {
       const code = Storage.getItem("validation");
-      const expiration: string | null | Date = Storage.getItem("expireTime");
+      const expiration: string | null | Date =
+        Storage.getItem("expire_validation");
+
       if (
         code == null ||
         expiration == null ||

@@ -83,31 +83,26 @@ export default class Album {
   public getImgUrl() {
     return this.imageurl;
   }
-  public static async getAllAlbums(): Promise<false | Album[]> {
-    let response: Album[] = [];
+  public static async getAllAlbums(): Promise<false | void | Album[]> {
     const expireTime = this.localStorage.getExpireTime();
     if (
       this.localStorage.getAlbuns() == null ||
       expireTime == null ||
       (expireTime !== null && expireTime < new Date())
     ) {
-      response = await this.getServerData().then();
-      if (response.length == 0) return false;
-
-      if (response == undefined) return false;
-      this.localStorage.setAlbuns(response);
-      this.localStorage.setExpireTime();
-    } else response = this.localStorage.getAlbuns();
-
-    return response;
+      return await this.getServerData().then((response) => {
+        this.localStorage.setAlbuns(response);
+        this.localStorage.setExpireTime();
+        return response;
+      });
+    } else return this.localStorage.getAlbuns();
   }
   private static async getServerData() {
     const request = new Request();
-    const result = await request
+    return await request
       .Execute("GET", Album.ALL_ALBUMS_URL)
       .then((response) => {
-        if (typeof response !== "string") return;
-        response = JSON.parse(response) as any;
+        response = JSON.parse(response as string) as any;
         const result: Album[] = [];
         (response as any).forEach((item: any) => {
           const album = new Album(
@@ -119,11 +114,7 @@ export default class Album {
           result.push(album);
         });
         return result;
-      })
-      .catch((err) => {
-        return err;
       });
-    return result;
   }
   public static async createAlbum(obj: {
     name: string;

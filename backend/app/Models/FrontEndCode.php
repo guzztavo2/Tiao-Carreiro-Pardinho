@@ -26,7 +26,9 @@ class FrontEndCode extends Model
     }
     public function generateDate()
     {
-        $date = new Carbon('now + 5 minutes', );
+        $date = new Carbon('now + 5 minutes');
+        // $date = new Carbon('now + 5 seconds');
+
         $this->expiration = $date->toDateTimeString();
         $this->save();
     }

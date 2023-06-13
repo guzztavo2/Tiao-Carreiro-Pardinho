@@ -189,7 +189,7 @@ form label {
   padding: 2%;
   display: flex;
   flex-flow: column wrap;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
 }
 form label.invalid input {

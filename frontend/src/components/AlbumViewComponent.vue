@@ -1,58 +1,86 @@
 <template>
-  <div class="header w-100 flexRow d-none">
-    <input
-      class="w-100"
-      type="text"
-      name=""
-      placeholder="Buscar por albums"
-      @keyup="buscarAlbuns"
-    />
-  </div>
-  <div class="w-100 d-none">
-    <h1>Veja alguns dos Álbuns:</h1>
-  </div>
-  <div
-    class="d-none flexRow albums-wrapper justify-content-center align-items-center"
-  >
+  <ModalComponent
+    v-if="ModalConfig.ModalVisible"
+    :modalType="ModalConfig.ModalType"
+    :message="ModalConfig.ModalMessage"
+    @setVisible="ModalConfig.setModalVisible"
+  ></ModalComponent>
+  <section class="albums_list">
+    <div class="header w-100 flexRow d-none">
+      <input
+        class="w-100"
+        type="text"
+        name=""
+        placeholder="Buscar por albums"
+        @keyup="buscarAlbuns"
+      />
+    </div>
+    <div class="w-100 d-none">
+      <h1>Veja alguns dos Álbuns:</h1>
+    </div>
     <div
-      class="album w-25 flexColumn align-items-center"
-      v-for="album in listAlbuns"
-      v-bind:key="album.id"
-      v-on:click="albumRequest(album)"
+      class="d-none flexRow albums-wrapper justify-content-center align-items-center"
     >
-      <div class="image-wrapper">
-        <img v-bind:src="album.imageurl" alt="" />
-      </div>
-      <div class="name-wrapper">
-        <h2>{{ album.name }}</h2>
-      </div>
-      <div class="dateLaunch">
-        <h2>Lançamento:{{ album.dateLaunch }}</h2>
+      <div
+        class="album w-25 flexColumn align-items-center"
+        v-for="album in listAlbuns"
+        v-bind:key="album.id"
+        v-on:click="albumRequest(album, album.id)"
+      >
+        <div class="image-wrapper">
+          <img v-bind:src="album.imageurl" alt="" />
+        </div>
+        <div class="name-wrapper">
+          <h2>{{ album.name }}</h2>
+        </div>
+        <div class="dateLaunch">
+          <h2>Lançamento:{{ album.dateLaunch }}</h2>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Album from "@/components/AlbumModel";
+import ModalComponent from "./ModalComponent.vue";
 @Options({
   emits: ["finishLoading", "AlbumRequest"],
+  components: { ModalComponent },
   async mounted() {
     this.$emit("finishLoading", true);
-    await Album.getAllAlbums().then((resolve) => {
-      this.listAlbuns = resolve;
-      this.listAlbunsCopy = this.listAlbuns;
-
-      document.querySelectorAll(".d-none").forEach((item) => {
-        item.classList.remove("d-none");
+    await Album.getAllAlbums()
+      .then((resolve) => {
+        this.listAlbuns = resolve;
+        this.listAlbunsCopy = this.listAlbuns;
+      })
+      .catch((error) => {
+        if (error.length == 0) {
+          error = "Não foi possível se conectar ao servidor";
+        }
+        this.ModalConfig.ModalMessage = error;
+        this.ModalConfig.setModalVisible();
+      })
+      .finally(() => {
+        this.$emit("finishLoading");
+        document.querySelectorAll(".d-none").forEach((item) => {
+          item.classList.remove("d-none");
+        });
       });
-      this.$emit("finishLoading");
-    });
   },
 })
 export default class AlbumsComponent extends Vue {
   listAlbuns: Album[] = [];
   listAlbunsCopy: Album[] = [];
+
+  ModalConfig = {
+    ModalMessage: "Olá mundo",
+    ModalType: 1,
+    ModalVisible: false,
+    setModalVisible: () => {
+      this.ModalConfig.ModalVisible = !this.ModalConfig.ModalVisible;
+    },
+  };
   buscarAlbuns(event: Event) {
     const responseText = (event.target as HTMLInputElement).value;
     this.listAlbuns = this.listAlbunsCopy;
@@ -62,10 +90,11 @@ export default class AlbumsComponent extends Vue {
 
     this.listAlbuns = searchResults;
   }
-  albumRequest(album: Album) {
+  albumRequest(album: Album, albumId: number) {
     document
       .querySelectorAll(".album")
-      [album.id - 1].classList.add("fade-out-top");
+      [albumId - 1].classList.add("fade-out-top");
+    document.querySelector("div.albums-wrapper")?.classList.add("fade-out");
     setTimeout(() => {
       this.$emit("AlbumRequest", album);
     }, 700);
@@ -76,6 +105,11 @@ export default class AlbumsComponent extends Vue {
 div.header {
   padding: 1%;
   background-color: var(--corPreto);
+}
+section.albums_list {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }
 div.header input {
   border: 0;
@@ -106,7 +140,7 @@ h2 {
 }
 section div.albums-wrapper {
   flex-wrap: wrap;
-  overflow: auto;
+  animation: fade-in 2s ease-in-out;
 }
 section div.albums-wrapper div.album {
   margin-top: 1%;
@@ -168,6 +202,28 @@ h1 {
     width: calc(100% / 1 - 2%);
   }
 }
+div.fade-in {
+  animation: fade-in 0.2s ease-in-out both;
+}
+div.fade-out {
+  animation: fade-out 0.2s ease-in-out both;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 /* ----------------------------------------------
  * Generated by Animista on 2023-5-29 7:57:10
  * Licensed under FreeBSD License.
@@ -180,6 +236,7 @@ h1 {
  * animation fade-out-top
  * ----------------------------------------
  */
+
 .fade-out-top {
   -webkit-animation: fade-out-top 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: fade-out-top 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
